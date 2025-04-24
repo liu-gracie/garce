@@ -30,6 +30,8 @@ app.post('/api/message', async (req, res) => {
     });
 
     const data = await response.json();
+    // console.log("🔍 OpenAI raw response:", data);
+    // for debugging ^
     res.json(data);
 
   } catch (err) {
