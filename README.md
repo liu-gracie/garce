@@ -1,1 +1,3 @@
 # garce
+
+API key: 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 

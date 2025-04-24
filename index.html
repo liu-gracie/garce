@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G.A.R.C.E.</title>
+  <link rel="stylesheet" href="stylesheet.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container" id="landing">
+    <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
+    <div class="draw">DRAW</div>
+    <h1>Grace Artificially Remembered:<br>a Client Experience</h1>
+    <h2>G.A.R.C.E.</h2>
+    <p class="description">
+      While Grace may no longer be with us today, the essence of Grace is captured on this site. Please sign-in or continue as a guest to talk, draw, and interact with this replicated consciousness.
+    </p>
+    <button class="start-button" onclick="startExperience()">START</button>
+  </div>
+
+  <div class="container" id="identity" style="display:none">
+    <button class="back-button" onclick="goBack()">&#9664; BACK</button>
+    <h1>Who are you to Grace?</h1>
+    <div class="button-group">
+      <button class="start-button" onclick="selectIdentity('mother')">MOTHER</button>
+      <button class="start-button" onclick="selectIdentity('professor')">PROFESSOR</button>
+      <button class="start-button" onclick="selectIdentity('friend')">FRIEND</button>
+    </div>
+  </div>
+
+  <div class="container" id="response" style="display:none">
+    <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
+    <div class="draw">DRAW</div>
+    <div class="response-text" id="responseText"></div>
+    <button class="start-button" onclick="signOut()">SIGN OUT</button>
+  </div>
+</body>
+</html>

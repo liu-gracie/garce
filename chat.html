@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat with Grace</title>
+  <link rel="stylesheet" href="stylesheet.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container chat-container">
+        <button class="back-button" onclick="window.location.href='index.html'">&#9664; BACK</button>
+        <div class="chat-title">Send Grace a text message!</div>
+        <button class="mode-button">MODE <span class="square-indicator"></span></button>
+      
+        <!-- Chat display area -->
+        <div id="chatArea" class="chat-area"></div>
+      
+        <!-- Message input -->
+        <textarea class="message-box" id="userMessage" placeholder="Type your message here..."></textarea>
+        <button class="start-button" onclick="sendMessage()">Send</button>
+      </div>
+</body>
+</html>
