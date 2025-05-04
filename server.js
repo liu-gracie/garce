@@ -43,3 +43,55 @@ app.post('/api/message', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+app.post('/api/image', async (req, res) => {
+  const prompt = req.body.prompt;
+
+  try {
+    const response = await fetch("https://api.replicate.com/v1/predictions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Token ${process.env.REPLICATE_API_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        version: "834207d1d550b92679f37abc816326565409dd5184aa9c1685b0cd23aedd7d7a",
+        input: { prompt: `TOK ${prompt}` }
+      })
+    });
+
+    const prediction = await response.json();
+
+    if (!prediction.urls?.get) return res.status(500).json({ error: "No polling URL" });
+
+    const pollUrl = prediction.urls.get;
+    let image_url = null;
+
+    for (let i = 0; i < 10; i++) {
+      const poll = await fetch(pollUrl, {
+        headers: { Authorization: `Token ${process.env.REPLICATE_API_TOKEN}` }
+      });
+      const pollData = await poll.json();
+
+      if (pollData.status === "succeeded") {
+        image_url = pollData.output?.[pollData.output.length - 1];
+        break;
+      } else if (pollData.status === "failed") {
+        throw new Error("Generation failed");
+      }
+
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    if (image_url) {
+      res.json({ image_url });
+    } else {
+      res.status(500).json({ error: "Timed out waiting for image" });
+    }
+
+  } catch (err) {
+    console.error("Error calling Replicate:", err);
+    res.status(500).json({ error: "Image generation error" });
+  }
+});
+

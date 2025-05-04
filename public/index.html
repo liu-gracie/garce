@@ -10,12 +10,14 @@
 <body>
   <div class="container" id="landing">
     <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
-    <div class="draw">DRAW</div>
+    <div class="call" onclick="window.location.href='call.html'">CALL</div>
     <h1>Grace Artificially Remembered:<br>a Client Experience</h1>
     <h2>G.A.R.C.E.</h2>
     <p class="description">
-      While Grace may no longer be with us today, the essence of Grace is captured on this site. Please sign-in or continue as a guest to talk, draw, and interact with this replicated consciousness.
+      While Grace may no longer be with us today, the essence of Grace is captured on this site. 
+      Click <a href="about.html" class="about-link">here</a> to learn more about this website.
     </p>
+    
     <button class="start-button" onclick="startExperience()">START</button>
   </div>
 
@@ -31,7 +33,7 @@
 
   <div class="container" id="response" style="display:none">
     <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
-    <div class="draw">DRAW</div>
+    <div class="call" onclick="window.location.href='call.html'">CALL</div>
     <div class="response-text" id="responseText"></div>
     <button class="start-button" onclick="signOut()">SIGN OUT</button>
   </div>

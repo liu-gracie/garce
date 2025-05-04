@@ -41,43 +41,74 @@ function startExperience() {
   
     if (!message) return;
   
-    // Add user message bubble
+    // Add user message
     const userBubble = document.createElement('div');
     userBubble.className = 'chat-bubble user';
     userBubble.textContent = message;
     chatArea.appendChild(userBubble);
     messageInput.value = '';
   
-    // Thinking bubble for Grace's reply
-    const thinkingBubble = document.createElement('div');
-    thinkingBubble.className = 'chat-bubble gpt';
-    thinkingBubble.textContent = 'Thinking...';
-    chatArea.appendChild(thinkingBubble);
     chatArea.scrollTop = chatArea.scrollHeight;
   
-    try {
-      const response = await fetch("/api/message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message })
-      });
+    // Check if message contains image-related keywords
+    const imageKeywords = ['draw', 'generate', 'picture', 'paint', 'visualize'];
+    const shouldGenerateImage = imageKeywords.some(word => message.toLowerCase().includes(word));
   
-      const data = await response.json();
+    if (shouldGenerateImage) {
+      const thinking = document.createElement('div');
+      thinking.className = 'chat-bubble gpt';
+      thinking.textContent = '🎨 Generating image...';
+      chatArea.appendChild(thinking);
+      chatArea.scrollTop = chatArea.scrollHeight;
   
-      if (!data.choices || !data.choices.length) {
-        thinkingBubble.textContent = "⚠️ Grace didn't respond. Try again.";
-        return;
+      try {
+        const imageResponse = await fetch('/api/image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: message })
+        });
+        const imageData = await imageResponse.json();
+  
+        if (imageData.image_url) {
+          thinking.innerHTML = `<img src="${imageData.image_url}" alt="Generated image" style="max-width:100%; border: 5px solid black; border-radius: 20px;" />`;
+        } else {
+          thinking.textContent = '⚠️ Image generation failed.';
+        }
+      } catch (err) {
+        console.error('Image generation error:', err);
+        thinking.textContent = '⚠️ Error generating image.';
       }
   
-      thinkingBubble.textContent = data.choices[0].message.content;
+    } else {
+      // Add GPT thinking response
+      const thinking = document.createElement('div');
+      thinking.className = 'chat-bubble gpt';
+      thinking.textContent = 'Thinking...';
+      chatArea.appendChild(thinking);
+      chatArea.scrollTop = chatArea.scrollHeight;
   
-    } catch (error) {
-      console.error("Error contacting server:", error);
-      thinkingBubble.textContent = "⚠️ Something went wrong. Please try again.";
+      try {
+        const response = await fetch("/api/message", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+  
+        const data = await response.json();
+  
+        if (!data.choices || !data.choices.length) {
+          thinking.textContent = "⚠️ Grace didn't respond. Try again.";
+          return;
+        }
+  
+        thinking.textContent = data.choices[0].message.content;
+  
+      } catch (error) {
+        console.error("Error contacting server:", error);
+        thinking.textContent = "⚠️ Something went wrong. Please try again.";
+      }
+  
+      chatArea.scrollTop = chatArea.scrollHeight;
     }
-  
-    chatArea.scrollTop = chatArea.scrollHeight;
   }
   
