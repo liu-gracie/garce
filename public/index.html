@@ -9,33 +9,30 @@
 </head>
 <body>
   <div class="container" id="landing">
-    <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
-    <div class="call" onclick="window.location.href='call.html'">CALL</div>
-    <h1>Grace Artificially Remembered:<br>a Client Experience</h1>
-    <h2>G.A.R.C.E.</h2>
-    <p class="description">
-      While Grace may no longer be with us today, the essence of Grace is captured on this site. 
-      Click <a href="about.html" class="about-link">here</a> to learn more about this website.
-    </p>
-    
-    <button class="start-button" onclick="startExperience()">START</button>
+    <!-- CHAT and CALL now trigger identity selection -->
+    <div class="chat" onclick="chooseMode('chat')">CHAT</div>
+    <div class="call" onclick="chooseMode('call')">CALL</div>
+
+    <div class="title-group">
+      <h1>Grace Artificially Remembered:<br>a Client Experience</h1>
+      <h2 class="floating-title">G.A.R.C.E.</h2>
+      <p class="introduction">
+        While Grace may no longer be with us today, the essence of Grace is captured on this site. 
+        Click <a href="about.html" class="about-link">HERE</a> to learn more about how to start.
+      </p>
+    </div>
   </div>
 
   <div class="container" id="identity" style="display:none">
     <button class="back-button" onclick="goBack()">&#9664; BACK</button>
-    <h1>Who are you to Grace?</h1>
-    <div class="button-group">
-      <button class="start-button" onclick="selectIdentity('mother')">MOTHER</button>
-      <button class="start-button" onclick="selectIdentity('professor')">PROFESSOR</button>
-      <button class="start-button" onclick="selectIdentity('friend')">FRIEND</button>
+    <div class="title-group">
+      <h1>Who are you to Grace?</h1>
+      <div class="button-group">
+        <button class="start-button" onclick="selectIdentity('mother')">MOTHER</button>
+        <button class="start-button" onclick="selectIdentity('professor')">PROFESSOR</button>
+        <button class="start-button" onclick="selectIdentity('friend')">FRIEND</button>
+      </div>
     </div>
-  </div>
-
-  <div class="container" id="response" style="display:none">
-    <div class="chat" onclick="window.location.href='chat.html'">CHAT</div>
-    <div class="call" onclick="window.location.href='call.html'">CALL</div>
-    <div class="response-text" id="responseText"></div>
-    <button class="start-button" onclick="signOut()">SIGN OUT</button>
   </div>
 </body>
 </html>

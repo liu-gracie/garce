@@ -12,6 +12,8 @@
 
     <!-- BACK button at the top -->
     <button class="back-button" onclick="window.location.href='index.html'">&#9664; BACK</button>
+    <div class="chat-title" id="callTitle" style="text-align:center;">Say something to Grace...</div>
+
 
     <!-- Content area: video + prompt input side by side -->
     <div style="display: flex; flex-direction: row; gap: 20px; flex: 1;">
@@ -35,6 +37,11 @@
       </div>
     </div>
   </div>
+
+  <script>
+    updateGreeting('#callTitle');
+  </script>
+  
 </body>
 </html>
 

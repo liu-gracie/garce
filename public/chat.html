@@ -10,8 +10,8 @@
 <body>
     <div class="container chat-container">
         <button class="back-button" onclick="window.location.href='index.html'">&#9664; BACK</button>
-        <div class="chat-title">Send Grace a text message!</div>
-        <button class="mode-button">MODE <span class="square-indicator"></span></button>
+        <div class="chat-title" id="chatTitle">Send Grace a text message!</div>
+
       
         <!-- Chat display area -->
         <div id="chatArea" class="chat-area"></div>
@@ -20,5 +20,10 @@
         <textarea class="message-box" id="userMessage" placeholder="Type your message here..."></textarea>
         <button class="start-button" onclick="sendMessage()">Send</button>
       </div>
+
+      <script>
+        updateGreeting('#chatTitle');
+      </script>
+      
 </body>
 </html>
