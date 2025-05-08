@@ -108,34 +108,42 @@ async function sendMessage() {
     }
 
   } else {
-    // Add GPT thinking response
     const thinking = document.createElement('div');
     thinking.className = 'chat-bubble gpt';
     thinking.textContent = 'Thinking...';
     chatArea.appendChild(thinking);
     chatArea.scrollTop = chatArea.scrollHeight;
-
+  
+    const identity = localStorage.getItem('grace_identity') || 'friend';
+  
     try {
       const response = await fetch("/api/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({
+          message,
+          identity,
+          lastGraceMessage
+        })
       });
-
+  
       const data = await response.json();
-
+  
       if (!data.choices || !data.choices.length) {
         thinking.textContent = "⚠️ Grace didn't respond. Try again.";
         return;
       }
-
-      thinking.textContent = data.choices[0].message.content;
-
+  
+      lastGraceMessage = data.choices[0].message.content;
+      thinking.textContent = lastGraceMessage;
+  
     } catch (error) {
       console.error("Error contacting server:", error);
       thinking.textContent = "⚠️ Something went wrong. Please try again.";
     }
-
+  
     chatArea.scrollTop = chatArea.scrollHeight;
   }
+  
 }
+
