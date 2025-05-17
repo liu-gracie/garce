@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>G.A.R.C.E.</title>
-  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="stylesheet.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
   <div class="container" id="landing">
-    <!-- CHAT and CALL now trigger identity selection -->
     <div class="chat" onclick="chooseMode('chat')">CHAT</div>
     <div class="call" onclick="chooseMode('call')">CALL</div>
 
@@ -32,6 +31,15 @@
         <button class="start-button" onclick="selectIdentity('professor')">PROFESSOR</button>
         <button class="start-button" onclick="selectIdentity('friend')">FRIEND</button>
       </div>
+    </div>
+  </div>
+
+  <div class="container" id="response" style="display:none">
+    <button class="back-button" onclick="signOut()">&#9664; BACK</button>
+    <div class="title-group">
+      <h1>Message from Grace:</h1>
+      <p id="responseText" class="introduction"></p>
+      <button class="start-button" onclick="window.location.href='chat.html'">&#9654;</button>
     </div>
   </div>
 </body>

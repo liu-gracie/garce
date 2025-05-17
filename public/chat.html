@@ -8,25 +8,31 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container chat-container">
-        <button class="back-button" onclick="window.location.href='index.html'">&#9664; BACK</button>
-        <div class="chat-title" id="chatTitle">Send Grace a text message!</div>
+  <div class="container chat-container">
+    <button class="back-button" onclick="window.location.href='index.html'">&#9664; BACK</button>
+    <div class="chat-title" id="chatTitle">Loading...</div>
 
-      
-        <!-- Chat display area -->
-        <div id="chatArea" class="chat-area"></div>
-      
-        <!-- Message input -->
-        <textarea class="message-box" id="userMessage" placeholder="Type your message here..."></textarea>
-        <button class="start-button" onclick="sendMessage()">Send</button>
-      </div>
+    <div id="chatArea" class="chat-area"></div>
 
-      <script>
-        window.addEventListener('DOMContentLoaded', () => {
-          updateGreeting('#chatTitle');
-        });
-      </script>
-      
-      
+    <textarea class="message-box" id="userMessage" placeholder="Type your message here..."></textarea>
+    <button class="start-button" onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const identity = localStorage.getItem('identity');
+      const mode = localStorage.getItem('mode');
+      const title = document.getElementById('chatTitle');
+
+      if (identity) {
+        if (identity === 'mother') title.textContent = "Hi Mom";
+        else if (identity === 'professor') title.textContent = "Hi Professor";
+        else if (identity === 'friend') title.textContent = "Hey Friend";
+        else title.textContent = "Send Grace a text message!";
+      } else {
+        title.textContent = "Send Grace a text message!";
+      }
+    });
+  </script>
 </body>
 </html>
