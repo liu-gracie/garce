@@ -33,7 +33,20 @@ function selectIdentity(role) {
   responseText.innerHTML = message;
   document.getElementById('identity').style.display = 'none';
   document.getElementById('response').style.display = 'block';
+
+
+  const startBtn = document.querySelector('#response .start-button');
+  const mode = localStorage.getItem('mode');
+
+  startBtn.onclick = () => {
+    if (mode === 'call') {
+      window.location.href = 'call.html';
+    } else {
+      window.location.href = 'chat.html';
+    }
+  };
 }
+
 
 function signOut() {
   localStorage.removeItem('identity');
