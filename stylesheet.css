@@ -257,13 +257,29 @@ button {
 .chat-bubble.user {
   background-color: #81c3b3;
   align-self: flex-end;
-  border-radius: 14px 14px 14px 4px;
+  border-radius: 14px 14px 4px 14px;
 }
 
 .chat-bubble.gpt {
   background-color: #e5529b;
   align-self: flex-start;
-  border-radius: 14px 14px 4px 14px;
+  border-radius: 14px 14px 14px 4px;
+}
+
+.chat-bubble.image-bubble {
+  padding: 0;
+  border: none;
+  background: none;
+  max-width: 70%;
+  border-radius: 0;
+}
+
+.chat-bubble.image-bubble img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px 14px 14px 4px;
+  border: 2px solid black;
 }
 
 .typing-dots {

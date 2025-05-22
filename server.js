@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('.'));
 
 app.post('/api/message', async (req, res) => {
   const userMessage = req.body.message;
@@ -16,15 +16,20 @@ app.post('/api/message', async (req, res) => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content: `Pretend you are Grace and reply to the following text message: "${userMessage}"`
-          }
-        ],
+      }, 
+      // body: JSON.stringify({
+      //   model: "gpt-4o",
+      //   messages: [
+      //     {
+      //       role: "user",
+      //       content: `Pretend you are Grace and reply to the following text message: "${userMessage}"`
+      //     }
+      //   ],
+      //   temperature: 0.7
+      // })
+       body: JSON.stringify({
+        model: "g-67eefd3921388191953eae88d067ab41", // GARCE custom GPT
+        messages: [{ role: "user", content: prompt }],
         temperature: 0.7
       })
     });
@@ -56,7 +61,8 @@ app.post('/api/image', async (req, res) => {
       },
       body: JSON.stringify({
         version: "834207d1d550b92679f37abc816326565409dd5184aa9c1685b0cd23aedd7d7a",
-        input: { prompt: `TOK ${prompt}` }
+        // input: { prompt: `TOK ${prompt}` }
+        input: { prompt: `You are TOK, a girl named Grace. ${prompt}` }
       })
     });
 

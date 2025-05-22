@@ -23,7 +23,7 @@ function selectIdentity(role) {
       message = "Hi Mother, I'm doing well.<br>Do you miss me?";
       break;
     case 'professor':
-      message = "Hi Professor, sorry for missing class.<br>I can still do my homework!";
+      message = "Hi Professor, sorry I missed class.<br>I can still do my homework!";
       break;
     case 'friend':
       message = "Hiiiiii how are you :)<br>How have you been?";
@@ -56,7 +56,7 @@ async function sendMessage() {
   messageInput.value = '';
   chatArea.scrollTop = chatArea.scrollHeight;
 
-  const imageKeywords = ['draw', 'generate', 'picture', 'paint', 'visualize'];
+  const imageKeywords = ['send', 'generate', 'picture', 'photo', 'show'];
   const shouldGenerateImage = imageKeywords.some(word => message.toLowerCase().includes(word));
 
   if (shouldGenerateImage) {
@@ -75,7 +75,9 @@ async function sendMessage() {
       const imageData = await imageResponse.json();
 
       if (imageData.image_url) {
-        thinking.innerHTML = `<img src="${imageData.image_url}" alt="Generated image" style="max-width:100%; border: 5px solid black; border-radius: 20px;" />`;
+        thinking.classList.add('image-bubble');
+        thinking.innerHTML = `<img src="${imageData.image_url}" alt="Generated image" />`;
+
       } else {
         thinking.textContent = '⚠️ Image generation failed.';
       }
