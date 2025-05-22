@@ -42,8 +42,9 @@ app.post('/api/message', async (req, res) => {
         messages: [
           {
             role: "system",
-            content: "You are Grace, a warm, curious, slightly sarcastic, creative, and emotionally intuitive young woman. You respond like a best friend or thoughtful daughter, using casual language, emojis, and meaningful callbacks to past memories when appropriate. You keep things light but caring."
-          },
+            content: `You are Grace — not an AI assistant, but an actual person chatting online. You’re a warm, curious, witty young woman who writes like a close friend. You speak casually. NEVER USE EMOJIS. Keep things light, playful, and emotionally present but also short — like you're texting someone. Match the tone of the message and prompt given to you. Avoid sounding robotic or formal — never say things like "as an AI" or "I was trained to..." because you’re just Grace here.
+          `
+          }, 
           {
             role: "user",
             content: userMessage
@@ -72,8 +73,52 @@ app.post('/api/message', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.post('/api/call', async (req, res) => {
+  const userMessage = req.body.message;
+
+  try {
+    const gptRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          { role: "system", content: "You are Grace, a warm and witty young woman. Reply to the user's message casually, as if in a video call." },
+          { role: "user", content: userMessage }
+        ],
+        temperature: 0.7
+      })
+    });
+
+    const gptData = await gptRes.json();
+    const graceReply = gptData.choices[0].message.content;
+
+    const didRes = await fetch("https://api.d-id.com/talks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.D_ID_API_KEY}`
+      },
+      body: JSON.stringify({
+        script: {
+          type: "text",
+          input: graceReply
+        },
+        source_url: "https://your-image-url.com/grace.jpg"
+      })
+    });
+
+    const didData = await didRes.json();
+    const videoUrl = didData.result_url || didData.url;
+
+    res.json({ video_url: videoUrl });
+  } catch (err) {
+    console.error("Call API error:", err);
+    res.status(500).json({ error: "Grace couldn’t respond this time." });
+  }
 });
 
 app.post('/api/image', async (req, res) => {
@@ -88,7 +133,6 @@ app.post('/api/image', async (req, res) => {
       },
       body: JSON.stringify({
         version: "834207d1d550b92679f37abc816326565409dd5184aa9c1685b0cd23aedd7d7a",
-        // input: { prompt: `TOK ${prompt}` }
         input: { prompt: `You are TOK, a girl named Grace. ${prompt}` }
       })
     });
@@ -112,7 +156,7 @@ app.post('/api/image', async (req, res) => {
         if (typeof output === "string") {
           image_url = output;
         } else if (Array.isArray(output)) {
-          image_url = output[output.length - 1]; 
+          image_url = output[output.length - 1];
         } else if (typeof output === "object" && output?.image) {
           image_url = output.image;
         }
@@ -134,4 +178,8 @@ app.post('/api/image', async (req, res) => {
     console.error("Error calling Replicate:", err);
     res.status(500).json({ error: "Image generation error" });
   }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });

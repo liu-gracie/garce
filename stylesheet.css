@@ -108,14 +108,14 @@ a:hover {
 }
 
 .chat::before {
-  content: "\2602";
+  content: "\260E";
   margin-right: 10px;
   font-size: 36px;
   vertical-align: middle;
 }
 
 .call::after {
-  content: "\260E";
+  content: "\2602";
   margin-left: 10px;
   font-size: 36px;
   vertical-align: middle;

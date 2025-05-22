@@ -40,7 +40,7 @@ function selectIdentity(role) {
 
   startBtn.onclick = () => {
     if (mode === 'call') {
-      window.location.href = 'call.html';
+      window.location.href = 'about.html';
     } else {
       window.location.href = 'chat.html';
     }
