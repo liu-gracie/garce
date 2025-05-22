@@ -77,7 +77,6 @@ async function sendMessage() {
       if (imageData.image_url) {
         thinking.classList.add('image-bubble');
         thinking.innerHTML = `<img src="${imageData.image_url}" alt="Generated image" />`;
-
       } else {
         thinking.textContent = '⚠️ Image generation failed.';
       }
@@ -101,6 +100,14 @@ async function sendMessage() {
       });
 
       const data = await response.json();
+
+      if (data.flagged) {
+        thinking.textContent = "Ok yea... I have to go";
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+        return;
+      }
 
       if (!data.choices || !data.choices.length) {
         thinking.textContent = "⚠️ Grace didn't respond. Try again.";

@@ -1,4 +1,4 @@
- const express = require('express');
+const express = require('express');
 require('dotenv').config();
 
 const app = express();
@@ -11,32 +11,59 @@ app.post('/api/message', async (req, res) => {
   const userMessage = req.body.message;
 
   try {
+    const moderationRes = await fetch("https://api.openai.com/v1/moderations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({ input: userMessage })
+    });
+
+    const moderationData = await moderationRes.json();
+
+    if (moderationData.results[0].flagged) {
+      return res.json({
+        choices: [
+          { message: { content: "I have to go" } }
+        ],
+        flagged: true
+      });
+    }
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      }, 
-      // body: JSON.stringify({
-      //   model: "gpt-4o",
-      //   messages: [
-      //     {
-      //       role: "user",
-      //       content: `Pretend you are Grace and reply to the following text message: "${userMessage}"`
-      //     }
-      //   ],
-      //   temperature: 0.7
-      // })
-       body: JSON.stringify({
-        model: "g-67eefd3921388191953eae88d067ab41", // GARCE custom GPT
-        messages: [{ role: "user", content: prompt }],
+      },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: "You are Grace, a warm, curious, slightly sarcastic, creative, and emotionally intuitive young woman. You respond like a best friend or thoughtful daughter, using casual language, emojis, and meaningful callbacks to past memories when appropriate. You keep things light but caring."
+          },
+          {
+            role: "user",
+            content: userMessage
+          }
+        ],
         temperature: 0.7
       })
     });
 
-    const data = await response.json();
-    // console.log("🔍 OpenAI raw response:", data);
-    // for debugging ^
+    const raw = await response.text();
+    console.log("\uD83D\uDD0D RAW OpenAI response:\n", raw);
+
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (err) {
+      console.error("\u274C Failed to parse OpenAI response as JSON:", err);
+      return res.status(500).json({ error: "Invalid JSON from OpenAI" });
+    }
+
     res.json(data);
 
   } catch (err) {
@@ -85,14 +112,12 @@ app.post('/api/image', async (req, res) => {
         if (typeof output === "string") {
           image_url = output;
         } else if (Array.isArray(output)) {
-          image_url = output[output.length - 1]; // get last image
+          image_url = output[output.length - 1]; 
         } else if (typeof output === "object" && output?.image) {
           image_url = output.image;
         }
 
         console.log("✅ Image URL returned:", image_url);
-
-
         break;
       }
 
